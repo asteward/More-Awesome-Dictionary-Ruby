@@ -42,4 +42,23 @@ describe 'Term' do
       expect(Term.all.length).to eq 2
     end
   end
+
+  describe '.remove_term' do
+    it 'removes an item from the dictionary array' do
+      Term.clear
+      new_term = Term.new('stuff', 'things to do').save
+      Term.remove_term(0)
+      expect(Term.all).to eql []
+    end
+  end
+
+  describe '.edit_term' do
+    it 'rewrites a definition' do
+      Term.clear
+      new_term =  Term.new('bear', "cuddles a lot")
+      new_term.save
+      Term.edit_term(0, "eats a lot")
+      expect(new_term.definition).to eq "eats a lot"
+    end
+  end
 end
