@@ -71,37 +71,57 @@ def list_terms
   loop do
     system 'clear'
     header
-    # Term.all.each_with_index do |term, index|
-    #   puts index.to_s + ") " + term.word
-    # end
     space
     puts "V to view term"
     puts "E to edit term"
     puts "D for delete term"
     puts "M for main menu"
+    puts "A for add definition to term"
     puts "Please enter choice"
     term_choice = gets.chomp.downcase
     if term_choice == "v"
       term = term_reader
       view_term(term)
+      main_menu
     elsif term_choice == "e"
       term = term_reader
       edit_term(term)
     elsif term_choice == "d"
       term = term_reader
       delete_term(term)
+    elsif term_choice == "a"
+      term = term_reader
+      add_definition(term)
     elsif term_choice == "m"
       main_menu
+
     else
       puts "Invalid choice. Try again."
     end
   end
 end
 
+def add_definition term
+  word_object = Term.object_search(term)
+  puts "Please enter in new definition:"
+  new_def = gets.chomp.downcase
+  word_object.add_definition(new_def)
+  puts "Definition has been added"
+  puts "Press ENTER to continue"
+  gets.chomp
+  list_terms
+end
+
 def edit_term term
+
+  word_object = Term.object_search(term)
+  word_object.object_return(term)
+  space
+  puts "Which definition would you like to change?"
+  def_index = gets.chomp.to_i
   puts "What would you like the new definition to be?"
   edit_choice = gets.chomp.downcase
-  Term.edit_term(term, edit_choice)
+  word_object.edit_term(edit_choice, def_index)
   puts "Term has been updated"
   puts "\nPress ENTER to continue..."
   gets.chomp
@@ -123,14 +143,11 @@ end
 def view_term term
   system 'clear'
   header
-  term_num = Term.search(term)
-  puts Term.all.at(term_num).word.upcase
-  puts " " +Term.all.at(term_num).definition
-  puts "----------"
+  word_object = Term.object_search(term)
+  word_object.object_return(term)
   space
   puts "\nPress ENTER to continue..."
   gets.chomp
-  main_menu
 end
 
 main_menu

@@ -1,12 +1,15 @@
 class Term
   attr_reader :word
-  attr_accessor :definition
+  attr_accessor :definitions
   @@dictionary = []
   def initialize word, definition
     @word = word
-    @definition = definition
+    @definitions = []
+    @definitions << definition
   end
-
+  def add_definition new_def
+    @definitions << new_def
+  end
   def Term.all
     @@dictionary
   end
@@ -24,9 +27,9 @@ class Term
     Term.all.delete_at(index)
   end
 
-  def Term.edit_term term, definition
-    index = Term.search(term)
-    Term.all.at(index).definition = definition
+  def edit_term definition, def_index
+    @definitions[def_index] = definition
+    #Term.all.at(index).definitions.at(def_index)
   end
 
   def Term.search term
@@ -39,5 +42,21 @@ class Term
       count += 1
     end
     index
+  end
+
+  def Term.object_search term
+    index = Term.search(term)
+    Term.all.at(index)
+  end
+
+  def object_return term
+    term_num = Term.search(term)
+    puts Term.all.at(term_num).word.upcase
+    count = 0
+    @definitions.each do |definition|
+      puts " " + count.to_s+ ": " + definition
+      count += 1
+    end
+    puts "----------"
   end
 end
