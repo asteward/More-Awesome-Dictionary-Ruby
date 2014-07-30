@@ -71,9 +71,9 @@ def list_terms
   loop do
     system 'clear'
     header
-    Term.all.each_with_index do |term, index|
-      puts index.to_s + ") " + term.word
-    end
+    # Term.all.each_with_index do |term, index|
+    #   puts index.to_s + ") " + term.word
+    # end
     space
     puts "V to view term"
     puts "E to edit term"
@@ -82,14 +82,14 @@ def list_terms
     puts "Please enter choice"
     term_choice = gets.chomp.downcase
     if term_choice == "v"
-      index = index_reader
-      view_term(index)
+      term = term_reader
+      view_term(term)
     elsif term_choice == "e"
-      index = index_reader
-      edit_term(index)
+      term = term_reader
+      edit_term(term)
     elsif term_choice == "d"
-      index = index_reader
-      delete_term(index)
+      term = term_reader
+      delete_term(term)
     elsif term_choice == "m"
       main_menu
     else
@@ -98,31 +98,32 @@ def list_terms
   end
 end
 
-def edit_term index
+def edit_term term
   puts "What would you like the new definition to be?"
   edit_choice = gets.chomp.downcase
-  Term.edit_term(index, edit_choice)
+  Term.edit_term(term, edit_choice)
   puts "Term has been updated"
   puts "\nPress ENTER to continue..."
   gets.chomp
 end
 
-def delete_term index
-  Term.remove_term(index)
+def delete_term term
+  Term.remove_term(term)
   puts "Term has been deleted"
   puts "\nPress ENTER to continue..."
   gets.chomp
 end
 
-def index_reader
-  puts "Please enter corresponding index number"
-  choice = gets.chomp.to_i
+def term_reader
+  puts "Enter term:"
+  choice = gets.chomp
 end
 
 
-def view_term term_num
+def view_term term
   system 'clear'
   header
+  term_num = Term.search(term)
   puts Term.all.at(term_num).word.upcase
   puts " " +Term.all.at(term_num).definition
   puts "----------"

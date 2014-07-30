@@ -61,4 +61,17 @@ describe 'Term' do
       expect(new_term.definition).to eq "eats a lot"
     end
   end
+
+  describe '.search' do
+    it 'returns the index of a term' do
+      Term.clear
+      new_term = Term.new('bear', "cuddles and eats a lot")
+      new_term.save
+      new_term2 = Term.new('bunny', "jumps a lot")
+      new_term2.save
+      new_term3 = Term.new('cow', "moos a lot")
+      new_term3.save
+      expect(Term.search('bunny')).to eq 1
+    end
+  end
 end
